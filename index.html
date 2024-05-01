@@ -1,0 +1,1172 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js">
+	<head>
+		<meta charset="utf-8" />
+		<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+		<meta name="viewport" content="width=device-width, initial-scale=1" />
+		<title>Linkatutto</title>
+		<meta name="robots" content="noindex" />
+		<meta name="googlebot" content="noindex" />
+		<link
+			rel="icon"
+			type="image/x-icon"
+			href="https://raw.githubusercontent.com/giovannilamarmoraproject/Portfolio/cd15a57f99b8cfdd8d3f29e4d7d0f3b52004c47d/assets/img/logo.svg"
+		/>
+		<link
+			href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,600"
+			rel="stylesheet"
+		/>
+		<script src="https://unpkg.com/animejs@3.0.1/lib/anime.min.js"></script>
+		<script src="https://unpkg.com/scrollreveal@4.0.0/dist/scrollreveal.min.js"></script>
+		<link
+			href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css"
+			rel="stylesheet"
+			integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM"
+			crossorigin="anonymous"
+		/>
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-geWF76RCwLtnZ8qwWowPQNguL3RmwHVBC9FhGdlKrxdiJJigb/j/68SIy3Te4Bkz"
+			crossorigin="anonymous"
+		></script>
+		<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	</head>
+
+	<body class="is-boxed">
+		<section id="loginForm" class="vh-100">
+			<div class="container-fluid">
+				<div class="row">
+					<div class="col-sm-6 text-black">
+						<div
+							class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-3 pt-xl-0 mt-xl-n5"
+						>
+							<form style="width: 23rem" type="submit">
+								<h3
+									class="fw-normal mb-3 pb-3"
+									style="letter-spacing: 1px"
+								>
+									Log in
+								</h3>
+
+								<div class="form-outline mb-4">
+									<input
+										type="text"
+										id="username"
+										class="form-control form-control-lg"
+									/>
+									<label
+										class="form-label text-light"
+										for="form2Example18"
+										>Username</label
+									>
+								</div>
+
+								<div class="form-outline mb-4">
+									<input
+										type="password"
+										id="password"
+										class="form-control form-control-lg"
+									/>
+									<label
+										class="form-label text-light"
+										for="form2Example28"
+										>Password</label
+									>
+								</div>
+
+								<div class="pt-1 mb-4">
+									<button
+										onclick="doLogin()"
+										class="btn btn-info btn-lg btn-block text-light bg-primary"
+										type="button"
+									>
+										Login
+									</button>
+								</div>
+							</form>
+						</div>
+					</div>
+					<div class="col-sm-6 px-0 d-none d-sm-block">
+						<img
+							src="https://www.itl.cat/pngfile/big/70-702323_hd-wallpaper-best-background-for-technology.jpg"
+							alt="Login image"
+							class="w-100 vh-100"
+							style="object-fit: cover; object-position: left"
+						/>
+					</div>
+				</div>
+			</div>
+		</section>
+		<div id="dashboard" class="body-wrap not-display has-animations">
+			<header class="site-header">
+				<div class="container">
+					<div class="site-header-inner">
+						<div class="brand header-brand">
+							<h1 class="m-0">
+								<a class="website_url" target="_blank" href="#">
+									<img
+										width="60"
+										class="header-logo-image logo-images"
+										src="https://raw.githubusercontent.com/giovannilamarmora/giovannilamarmora.github.io/0f58a355856d25a7154482951a3220899ee59d10/assets/icons/svg/rounded_white.svg"
+										alt="Logo"
+									/>
+								</a>
+							</h1>
+						</div>
+						<div
+							class="text-right"
+							style="z-index: 10; font-size: medium"
+						>
+							<a href="https://github.com/" target="_blank"
+								>GitHub</a
+							>
+							<a class="line m-2"></a>
+							<a class="log_explore" target="_blank" href="#"
+								>LOG Explore</a
+							>
+						</div>
+					</div>
+				</div>
+			</header>
+
+			<main>
+				<section class="hero" style="margin-top: 100px">
+					<div class="container">
+						<div class="hero-inner">
+							<div class="hero-copy">
+								<h1 class="mt-0">All Microservices links</h1>
+								<p class="hero-paragraph">
+									Scroll down to find all the Microservices
+									URL.
+								</p>
+								<div class="hero-cta">
+									<a
+										style="border-radius: 20px"
+										target="_blank"
+										class="btn btn-primary github_url"
+										href="https://github.com/giovannilamarmora"
+										>GitHub Profile</a
+									>
+								</div>
+							</div>
+							<div class="hero-figure anime-element">
+								<svg
+									class="placeholder"
+									width="528"
+									height="396"
+									viewBox="0 0 528 396"
+									style="color: transparent"
+								>
+									<rect
+										width="528"
+										height="396"
+										style="fill: transparent"
+									/>
+								</svg>
+								<div
+									class="hero-figure-box hero-figure-box-01"
+									data-rotation="45deg"
+								></div>
+								<div
+									class="hero-figure-box hero-figure-box-02"
+									data-rotation="-45deg"
+								></div>
+								<div
+									class="hero-figure-box hero-figure-box-03"
+									data-rotation="0deg"
+								></div>
+								<div
+									class="hero-figure-box hero-figure-box-04"
+									data-rotation="-135deg"
+								></div>
+								<div
+									class="hero-figure-box hero-figure-box-05"
+								></div>
+								<div
+									class="hero-figure-box hero-figure-box-06"
+								></div>
+								<div
+									class="hero-figure-box hero-figure-box-07"
+								></div>
+								<div
+									class="hero-figure-box hero-figure-box-08"
+									data-rotation="-22deg"
+								></div>
+								<div
+									class="hero-figure-box hero-figure-box-09"
+									data-rotation="-52deg"
+								></div>
+								<div
+									class="hero-figure-box hero-figure-box-10"
+									data-rotation="-50deg"
+								></div>
+							</div>
+						</div>
+					</div>
+				</section>
+				<div id="dataList"></div>
+				<!--<section class="features section">
+					<div class="container">
+						<div
+							class="features-inner section-inner has-bottom-divider"
+						>
+							<div class="features-wrap">
+								<div class="feature text-center is-revealing">
+									<div class="feature-inner">
+										<div align="center" class="row">
+											<div class="card mx-auto">
+												<div
+													class="card-side front"
+													style="
+														background-image: url(https://repository-images.githubusercontent.com/114938943/98879880-6796-11ea-8a07-a3f907697ec6);
+														align-items: cover;
+													"
+												></div>
+												<div class="card-side back">
+													<div class="">
+														<h4
+															class="text-center text-white fw-bolder text-uppercase"
+														>
+															Nginx-Proxy-Manager
+														</h4>
+														<hr />
+														<div align="center">
+															<a
+																href="https://nginxproxymanager.dynv6.net/"
+																target="_blank"
+																class="btn btn-primary rounded-pill mb-2"
+																style="
+																	margin-top: -10px;
+																	width: 150px;
+																	height: 50px;
+																	padding-top: auto;
+																"
+																>Dynv6.net</a
+															>
+															<a
+																href="https://nginx.proxy.manager.hostwebserver.site"
+																target="_blank"
+																class="btn btn-primary rounded-pill"
+																style="
+																	width: 230px;
+																	height: 50px;
+																	padding-top: auto;
+																"
+																>HostWebServer.site</a
+															>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+								<div class="feature text-center is-revealing">
+									<div class="feature-inner">
+										<div align="center" class="row">
+											<div class="card mx-auto">
+												<div
+													class="card-side front"
+													style="
+														background-image: url(https://api.civo.com/k3s-marketplace/portainer.png);
+														align-items: cover;
+													"
+												></div>
+												<div class="card-side back">
+													<div class="">
+														<h4
+															class="text-center text-white fw-bolder text-uppercase"
+														>
+															Portainer
+														</h4>
+														<hr />
+														<div align="center">
+															<a
+																href="https://portainerweb.dynv6.net/"
+																target="_blank"
+																class="btn btn-primary rounded-pill mb-2"
+																style="
+																	margin-top: -10px;
+																	width: 150px;
+																	height: 50px;
+																	padding-top: auto;
+																"
+																>Dynv6.net</a
+															>
+															<a
+																href="https://portainer.hostwebserver.site"
+																target="_blank"
+																class="btn btn-primary rounded-pill"
+																style="
+																	width: 230px;
+																	height: 50px;
+																	padding-top: auto;
+																"
+																>HostWebServer.site</a
+															>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+								<div class="feature text-center is-revealing">
+									<div class="feature-inner">
+										<div align="center" class="row">
+											<div class="card mx-auto">
+												<div
+													class="card-side front"
+													style="
+														background-image: url(https://avatars.slack-edge.com/2021-03-12/1849535619221_1dae4605d78c0f98590f_512.png);
+														align-items: cover;
+													"
+												></div>
+												<div class="card-side back">
+													<div class="">
+														<h4
+															class="text-center text-white fw-bolder text-uppercase"
+														>
+															LogTail
+														</h4>
+														<hr />
+														<div align="center">
+															<a
+																href="https://logs.betterstack.com/team/136726/tail?rf=1674771352000000&s=227095"
+																target="_blank"
+																class="btn btn-primary rounded-pill mb-2"
+																style="
+																	margin-top: 10px;
+																	width: 150px;
+																	height: 50px;
+																	padding-top: auto;
+																"
+																>Open</a
+															>
+														</div>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+
+							</div>
+						</div>
+					</div>
+				</section>
+				<section class="features section">
+					<div class="container">
+
+						<div
+						class="features-inner section-inner has-bottom-divider"
+						>
+						<h1 class="text-center">Database and CMS</h1>
+
+						<div class="features-wrap">
+							<div class="feature text-center is-revealing">
+								<div class="feature-inner">
+									<div align="center" class="row">
+										<div class="card mx-auto">
+											<div
+												class="card-side front"
+												style="
+													background-image: url(https://www.linuxuntu.com/wp-content/uploads/2023/04/MySQL-Logo.jpg);
+													align-items: cover;
+												"
+											></div>
+											<div class="card-side back">
+												<div class="">
+													<h4
+														class="text-center text-white fw-bolder text-uppercase"
+													>
+														MySQL Database
+													</h4>
+													<hr />
+													<div align="center">
+														<a
+															href="https://oraclewebdatabase.dynv6.net"
+															target="_blank"
+															class="btn btn-primary rounded-pill mb-2"
+															style="
+																margin-top: -10px;
+																width: 150px;
+																height: 50px;
+																padding-top: auto;
+															"
+															>Dynv6.net</a
+														>
+														<a
+															href="https://database.hostwebserver.site"
+															target="_blank"
+															class="btn btn-primary rounded-pill"
+															style="
+																width: 230px;
+																height: 50px;
+																padding-top: auto;
+															"
+															>HostWebServer.site</a
+														>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="feature text-center is-revealing">
+								<div class="feature-inner">
+									<div align="center" class="row">
+										<div class="card mx-auto">
+											<div
+												class="card-side front"
+												style="
+													background-image: url(https://raw.githubusercontent.com/github/explore/80688e429a7d4ef2fca1e82350fe8e3517d3494d/topics/contentful/contentful.png);
+													background-size: contain;
+													background-repeat: no-repeat;
+													background-color: #fff;
+												"
+											></div>
+											<div class="card-side back">
+												<div class="">
+													<h4
+														class="text-center text-white fw-bolder text-uppercase"
+													>
+														Contentful CMS
+													</h4>
+													<hr />
+													<div align="center">
+														<a
+															href="https://app.contentful.com/spaces/uptyiu46x1l9/entries?id=fyk5hvG3zOW12KHV&title=Overview&contentTypeId=jobs&order.fieldId=updatedAt&order.direction=descending&displayedFieldIds=contentType&displayedFieldIds=updatedAt&displayedFieldIds=author&folderId=DZ1a8bkMk6gobjKd&page=0&entitiesTotal=4"
+															target="_blank"
+															class="btn btn-primary rounded-pill mb-2"
+															style="
+																margin-top: 10px;
+																width: 150px;
+																height: 50px;
+																padding-top: auto;
+															"
+															>Open</a
+														>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="feature text-center is-revealing">
+								<div class="feature-inner">
+									<div align="center" class="row">
+										<div class="card mx-auto">
+											<div
+												class="card-side front"
+												style="
+													background-image: url(https://miro.medium.com/v2/resize:fit:256/1*2b4k1_SmKkNRgqZV-NMFQg.png);
+													background-size: contain;
+													background-repeat: no-repeat;
+													background-color: #fff;
+												"
+											></div>
+											<div class="card-side back">
+												<div class="">
+													<h4
+														class="text-center text-white fw-bolder text-uppercase"
+													>
+														Nexus Repository
+													</h4>
+													<hr />
+													<div align="center">
+														<a
+															href="https://s01.oss.sonatype.org/#welcome"
+															target="_blank"
+															class="btn btn-primary rounded-pill mb-2"
+															style="
+																margin-top: 10px;
+																width: 150px;
+																height: 50px;
+																padding-top: auto;
+															"
+															>Open</a
+														>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+					</div>
+				</section>
+				<section class="features section">
+					<div class="container">
+						<div
+						class="features-inner section-inner has-bottom-divider"
+						>
+						<h1 class="text-center">Microservices</h1>
+
+						<div class="features-wrap">
+							<div class="feature text-center is-revealing">
+								<div class="feature-inner">
+									<div align="center" class="row">
+										<div class="card mx-auto">
+											<div
+												class="card-side front"
+												style="
+													background-image: url(https://media.emailonacid.com/wp-content/uploads/2021/10/Dark-Mode-Logo-Problems_1600X900.png);
+													align-items: cover;
+												"
+											></div>
+											<div class="card-side back">
+												<div class="">
+													<h4
+														class="text-center text-white fw-bolder text-uppercase"
+													>
+														Email-Sender
+													</h4>
+													<hr />
+													<div align="center">
+														<a hidden
+															href="https://oraclewebserver.ddns.net/email-sender/"
+															target="_blank"
+															class="btn btn-primary rounded-pill mb-2"
+															style="
+																margin-top: 10px;
+																width: 150px;
+																height: 50px;
+																padding-top: auto;
+															"
+															>DDNS.net</a
+														>
+														<a
+															href="https://email-sender.hostwebserver.site/email-sender/"
+															target="_blank"
+															class="btn btn-primary rounded-pill"
+															style="
+																width: 230px;
+																height: 50px;
+																padding-top: auto;
+															"
+															>HostWebServer.site</a
+														>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="feature text-center is-revealing">
+								<div class="feature-inner">
+									<div align="center" class="row">
+										<div class="card mx-auto">
+											<div
+												class="card-side front"
+												style="
+													background-image: url(https://raw.githubusercontent.com/giovannilamarmora/giovannilamarmora.github.io/0f58a355856d25a7154482951a3220899ee59d10/assets/icons/svg/rounded_black.svg);
+													background-size: contain;
+													background-color: #000;
+													background-repeat: no-repeat;
+												"
+											></div>
+											<div class="card-side back">
+												<div class="">
+													<h4
+														class="text-center text-white fw-bolder text-uppercase mb-2"
+													>
+														Portfolio
+													</h4>
+													<hr />
+													<div align="center">
+														<a
+															href="https://giovannilamarmora.github.io"
+															target="_blank"
+															class="btn btn-primary rounded-pill mb-2"
+															style="
+																margin-top: 20px;
+																width: 150px;
+																height: 50px;
+																padding-top: auto;
+															"
+															>GitHub</a
+														>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="feature text-center is-revealing">
+								<div class="feature-inner">
+									<div align="center" class="row">
+										<div class="card mx-auto">
+											<div
+												class="card-side front"
+												style="
+													background-image: url(https://raw.githubusercontent.com/MoneyStats/App/main/assets/images/logos/logo.png);
+													align-items: cover;
+												"
+											></div>
+											<div class="card-side back">
+												<div class="">
+													<h4
+														class="text-center text-white fw-bolder text-uppercase"
+													>
+														PROD-Moneystats
+													</h4>
+													<hr />
+													<div align="center">
+														<a
+															href="https://prd.moneystats.service.hostwebserver.site"
+															target="_blank"
+															class="btn btn-primary rounded-pill mb-2"
+															style="
+																width: 150px;
+																height: 50px;
+																padding-top: auto;
+															"
+															>Service</a
+														>
+													</div>
+													<div align="center">
+														<a
+															href="https://moneystats.github.io"
+															target="_blank"
+															class="btn btn-primary rounded-pill mb-2"
+															style="
+																width: 150px;
+																height: 50px;
+																padding-top: auto;
+															"
+															>APP</a
+														>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="feature text-center is-revealing">
+								<div class="feature-inner">
+									<div align="center" class="row">
+										<div class="card mx-auto">
+											<div
+												class="card-side front"
+												style="
+													background-image: url(https://raw.githubusercontent.com/MoneyStats/App/main/assets/images/logos/logo.png);
+													align-items: cover;
+												"
+											>
+												<div
+													class="featured-box text-center"
+													style="padding-top: 30%"
+												>
+													<p
+														class="text-light text-center"
+														style="
+															margin-top: 120px;
+														"
+													>
+														Beta o Alpha
+													</p>
+												</div>
+											</div>
+											<div class="card-side back">
+												<div class="">
+													<h4
+														class="text-center text-white fw-bolder text-uppercase"
+													>
+														STG-Moneystats
+													</h4>
+													<hr />
+													<div align="center">
+														<a
+															href="https://stg.moneystats.service.hostwebserver.site"
+															target="_blank"
+															class="btn btn-primary rounded-pill mb-2"
+															style="
+																width: 150px;
+																height: 50px;
+																padding-top: auto;
+															"
+															>Service</a
+														>
+													</div>
+													<div align="center">
+														<a
+															href="https://stg.moneystats.app.hostwebserver.site"
+															target="_blank"
+															class="btn btn-primary rounded-pill"
+															style="
+																width: 230px;
+																height: 50px;
+																padding-top: auto;
+															"
+															>HostWebServer.site</a
+														>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</section>
+				<section class="features section">
+					<div class="container">
+						<div
+						class="features-inner section-inner has-bottom-divider"
+						>
+						<h1 class="text-center">Hosting Configuration</h1>
+
+						<div class="features-wrap">
+							<div class="feature text-center is-revealing">
+								<div class="feature-inner">
+									<div align="center" class="row">
+										<div class="card mx-auto">
+											<div
+												class="card-side front"
+												style="
+													background-image: url(https://pbs.twimg.com/profile_images/571530779667095552/s6UmVaG3_400x400.jpeg);
+													align-items: cover;
+												"
+											></div>
+											<div class="card-side back">
+												<div class="">
+													<h4
+														class="text-center text-white fw-bolder text-uppercase"
+													>
+														No-IP
+													</h4>
+													<hr />
+													<div align="center">
+														<a
+															href="https://my.noip.com/dynamic-dns"
+															target="_blank"
+															class="btn btn-primary rounded-pill mb-2"
+															style="
+																margin-top: 10px;
+																width: 150px;
+																height: 50px;
+																padding-top: auto;
+															"
+															>Open</a
+														>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="feature text-center is-revealing">
+								<div class="feature-inner">
+									<div align="center" class="row">
+										<div class="card mx-auto">
+											<div
+												class="card-side front"
+												style="
+													background-image: url(https://community.dynv6.com/uploads/default/original/1X/8ff5c14ae166ade3215ec2c30c47231942c53018.png);
+													background-size: contain;
+													background-repeat: no-repeat;
+													background-color: #000;
+												"
+											></div>
+											<div class="card-side back">
+												<div class="">
+													<h4
+														class="text-center text-white fw-bolder text-uppercase mb-2"
+													>
+														Dynv6.net
+													</h4>
+													<hr />
+													<div align="center">
+														<a
+															href="https://dynv6.com/zones"
+															target="_blank"
+															class="btn btn-primary rounded-pill mb-2"
+															style="
+																margin-top: 20px;
+																width: 150px;
+																height: 50px;
+																padding-top: auto;
+															"
+															>Open</a
+														>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="feature text-center is-revealing">
+								<div class="feature-inner">
+									<div align="center" class="row">
+										<div class="card mx-auto">
+											<div
+												class="card-side front"
+												style="
+													background-image: url(https://cdn.trendhunterstatic.com/thumbs/459/namecheap.jpeg?auto=webp);
+													background-size: contain;
+													background-repeat: no-repeat;
+													background-color: #323232;
+												"
+											></div>
+											<div class="card-side back">
+												<div class="">
+													<h4
+														class="text-center text-white fw-bolder text-uppercase mb-2"
+													>
+														Namecheap
+													</h4>
+													<hr />
+													<div align="center">
+														<a
+															href="https://ap.www.namecheap.com/"
+															target="_blank"
+															class="btn btn-primary rounded-pill mb-2"
+															style="
+																margin-top: 20px;
+																width: 150px;
+																height: 50px;
+																padding-top: auto;
+															"
+															>Open</a
+														>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div id="toEdit" class="feature text-center is-revealing">
+								<div class="feature-inner">
+									<div align="center" class="row">
+										<div class="card mx-auto">
+											<div
+												class="card-side front"
+												style="
+													background-image: url(https://flowti.com.br/storage/blog/1644572023022063f3a3895c985.png);
+													background-size: cover;
+													background-repeat: no-repeat;
+													background-color: #000;
+												"
+											></div>
+											<div class="card-side back">
+												<div class="">
+													<h4
+														class="text-center text-white fw-bolder text-uppercase mb-2"
+													>
+														Oracle Cloud Instance
+													</h4>
+													<hr />
+													<div align="center">
+														<a
+															href="https://www.oracle.com/cloud/sign-in.html?redirect_uri=https%3A%2F%2Fcloud.oracle.com%2Fcompute%2Finstances%2Focid1.instance.oc1.eu-milan-1.anwgsljrc4ohxsycfnfquw7sgizdjks6c3uximev2s35osf3py2bvo2kplaa%3Fregion%3Deu-milan-1"
+															target="_blank"
+															class="btn btn-primary rounded-pill mb-2"
+															style="
+																margin-top: 20px;
+																width: 150px;
+																height: 50px;
+																padding-top: auto;
+															"
+															>Open</a
+														>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div id="toEdit" class="feature text-center is-revealing">
+								<div class="feature-inner">
+									<div align="center" class="row">
+										<div class="card mx-auto">
+											<div
+												class="card-side front"
+												style="
+													background-image: url(https://techcrunch.com/wp-content/uploads/2015/09/docker-dark.png);
+													background-size: cover;
+													background-repeat: no-repeat;
+													background-color: #000;
+												"
+											></div>
+											<div class="card-side back">
+												<div class="">
+													<h4
+														class="text-center text-white fw-bolder text-uppercase mb-2"
+													>
+														Docker Hub
+													</h4>
+													<hr />
+													<div align="center">
+														<a
+															href="https://hub.docker.com/"
+															target="_blank"
+															class="btn btn-primary rounded-pill mb-2"
+															style="
+																margin-top: 20px;
+																width: 150px;
+																height: 50px;
+																padding-top: auto;
+															"
+															>Open</a
+														>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>-->
+				<!-- END CARDS
+						</div>
+					</div>
+				</section>
+				<section class="features section">
+					<div class="container">
+
+						<h1 class="text-center">SEO</h1>
+
+						<div class="features-wrap">
+							<div class="feature text-center is-revealing">
+								<div class="feature-inner">
+									<div align="center" class="row">
+										<div class="card mx-auto">
+											<div
+												class="card-side front"
+												style="
+													background-image: url(https://nicolettieassociati.it/wp-content/uploads/2022/10/google-analytics-web.png);
+													background-size: contain;
+													background-repeat: no-repeat;
+													background-color: #fff;
+												"
+											></div>
+											<div class="card-side back">
+												<div class="">
+													<h4
+														class="text-center text-white fw-bolder text-uppercase"
+													>
+														Google Analytics
+													</h4>
+													<hr />
+													<div align="center">
+														<a
+															href="https://analytics.google.com/analytics/web/#/p307612145/reports/home"
+															target="_blank"
+															class="btn btn-primary rounded-pill mb-2"
+															style="
+																margin-top: 10px;
+																width: 150px;
+																height: 50px;
+																padding-top: auto;
+															"
+															>Open</a
+														>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="feature text-center is-revealing">
+								<div class="feature-inner">
+									<div align="center" class="row">
+										<div class="card mx-auto">
+											<div
+												class="card-side front"
+												style="
+													background-image: url(https://blog.yourtarget.ch/wp-content/uploads/2023/04/Google-Search.png);
+													background-size: cover;
+													background-repeat: no-repeat;
+													background-color: #000;
+												"
+											></div>
+											<div class="card-side back">
+												<div class="">
+													<h4
+														class="text-center text-white fw-bolder text-uppercase mb-2"
+													>
+														Google Search Console
+													</h4>
+													<hr />
+													<div align="center">
+														<a
+															href="https://search.google.com/search-console"
+															target="_blank"
+															class="btn btn-primary rounded-pill mb-2"
+															style="
+																margin-top: 20px;
+																width: 150px;
+																height: 50px;
+																padding-top: auto;
+															"
+															>Open</a
+														>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="feature text-center is-revealing">
+								<div class="feature-inner">
+									<div align="center" class="row">
+										<div class="card mx-auto">
+											<div
+												class="card-side front"
+												style="
+													background-image: url(https://hangtenseo.com/wp-content/uploads/2019/10/google-tag-Manger.png);
+													background-size: cover;
+													background-repeat: no-repeat;
+													background-color: #323232;
+												"
+											></div>
+											<div class="card-side back">
+												<div class="">
+													<h4
+														class="text-center text-white fw-bolder text-uppercase mb-2"
+													>
+														Google Tag Manager
+													</h4>
+													<hr />
+													<div align="center">
+														<a
+															href="https://tagmanager.google.com/#/home"
+															target="_blank"
+															class="btn btn-primary rounded-pill mb-2"
+															style="
+																margin-top: 20px;
+																width: 150px;
+																height: 50px;
+																padding-top: auto;
+															"
+															>Open</a
+														>
+													</div>
+												</div>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>-->
+
+				<!-- END CARDS
+						</div>
+					</div>
+				</section>-->
+			</main>
+
+			<footer class="site-footer">
+				<div class="container">
+					<div class="site-footer-inner">
+						<div class="brand footer-brand">
+							<a class="website_url" target="_blank" href="#">
+								<img
+									width="60"
+									class="header-logo-image logo-images"
+									src="https://raw.githubusercontent.com/giovannilamarmoraproject/Portfolio/cd15a57f99b8cfdd8d3f29e4d7d0f3b52004c47d/assets/img/logo.svg"
+									alt="Logo"
+								/>
+							</a>
+						</div>
+						<ul class="footer-links list-reset">
+							<li>
+								<a id="contact_url" target="_blank" href="#"
+									>Contact</a
+								>
+							</li>
+							<li>
+								<a id="about_url" target="_blank" href="#"
+									>About us</a
+								>
+							</li>
+							<li>
+								<a id="FAQ_url" target="_blank" href="#"
+									>FAQ's</a
+								>
+							</li>
+							<li>
+								<a id="support_url" target="_blank" href="#"
+									>Support</a
+								>
+							</li>
+						</ul>
+						<ul class="footer-social-links list-reset">
+							<li>
+								<a class="github-url" href="#">
+									<span class="screen-reader-text"
+										>Facebook</span
+									>
+									<svg
+										width="16"
+										height="16"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M6.023 16L6 9H3V6h3V4c0-2.7 1.672-4 4.08-4 1.153 0 2.144.086 2.433.124v2.821h-1.67c-1.31 0-1.563.623-1.563 1.536V6H13l-1 3H9.28v7H6.023z"
+											fill="#0270D7"
+										/>
+									</svg>
+								</a>
+							</li>
+							<li>
+								<a class="github-url" href="#">
+									<span class="screen-reader-text"
+										>Twitter</span
+									>
+									<svg
+										width="16"
+										height="16"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M16 3c-.6.3-1.2.4-1.9.5.7-.4 1.2-1 1.4-1.8-.6.4-1.3.6-2.1.8-.6-.6-1.5-1-2.4-1-1.7 0-3.2 1.5-3.2 3.3 0 .3 0 .5.1.7-2.7-.1-5.2-1.4-6.8-3.4-.3.5-.4 1-.4 1.7 0 1.1.6 2.1 1.5 2.7-.5 0-1-.2-1.5-.4C.7 7.7 1.8 9 3.3 9.3c-.3.1-.6.1-.9.1-.2 0-.4 0-.6-.1.4 1.3 1.6 2.3 3.1 2.3-1.1.9-2.5 1.4-4.1 1.4H0c1.5.9 3.2 1.5 5 1.5 6 0 9.3-5 9.3-9.3v-.4C15 4.3 15.6 3.7 16 3z"
+											fill="#0270D7"
+										/>
+									</svg>
+								</a>
+							</li>
+							<li>
+								<a class="github-url" href="#">
+									<span class="screen-reader-text"
+										>Google</span
+									>
+									<svg
+										width="16"
+										height="16"
+										xmlns="http://www.w3.org/2000/svg"
+									>
+										<path
+											d="M7.9 7v2.4H12c-.2 1-1.2 3-4 3-2.4 0-4.3-2-4.3-4.4 0-2.4 2-4.4 4.3-4.4 1.4 0 2.3.6 2.8 1.1l1.9-1.8C11.5 1.7 9.9 1 8 1 4.1 1 1 4.1 1 8s3.1 7 7 7c4 0 6.7-2.8 6.7-6.8 0-.5 0-.8-.1-1.2H7.9z"
+											fill="#0270D7"
+										/>
+									</svg>
+								</a>
+							</li>
+						</ul>
+						<div id="copyright-text" class="footer-copyright">
+							&copy; 2023 Giovanni Lamarmora, all rights reserved
+						</div>
+					</div>
+				</div>
+			</footer>
+		</div>
+	</body>
+	<link rel="stylesheet" href="./style.css" />
+	<script src="./js/main.js"></script>
+	<script src="./js/rest.js"></script>
+	<script src="./js/animation.js"></script>
+</html>
