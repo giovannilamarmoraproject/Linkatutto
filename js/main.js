@@ -8,7 +8,7 @@ $(document).ready(function () {
 
 function getDatas() {
   getStrapiData(
-    "https://strapi.hostwebserver.site/api/hostwebservers?populate=*"
+    "https://strapi.giovannilamarmora.com/api/hostwebservers?populate=*"
   ).then((data) => {
     if (data.error != null) {
       localStorage.clear();
@@ -24,7 +24,7 @@ function getDatas() {
 
 function getSingleDatas() {
   getStrapiData(
-    "https://strapi.hostwebserver.site/api/hostwebserver-config?populate=*"
+    "https://strapi.giovannilamarmora.com/api/hostwebserver-config?populate=*"
   ).then((data) => {
     if (data.error != null) {
       localStorage.clear();
@@ -50,20 +50,21 @@ function doLogin() {
   let encode = btoa(username + ":" + password);
 
   const body = { identifier: username, password: password };
-  postStrapiData("https://strapi.hostwebserver.site/api/auth/local", body).then(
-    (data) => {
-      if (data.error != null)
-        Swal.fire({
-          icon: "error",
-          title: "Oops...",
-          text: "Invalid credentials!",
-        });
-      else {
-        localStorage.setItem("access-token", data.jwt);
-        getDatas();
-      }
+  postStrapiData(
+    "https://strapi.giovannilamarmora.com/api/auth/local",
+    body
+  ).then((data) => {
+    if (data.error != null)
+      Swal.fire({
+        icon: "error",
+        title: "Oops...",
+        text: "Invalid credentials!",
+      });
+    else {
+      localStorage.setItem("access-token", data.jwt);
+      getDatas();
     }
-  );
+  });
 }
 
 function mapData(inputData) {
@@ -80,7 +81,7 @@ function mapData(inputData) {
       title: item.attributes.title,
       logo:
         item.attributes.logo.data != null
-          ? "https://strapi.hostwebserver.site" +
+          ? "https://strapi.giovannilamarmora.com" +
             item.attributes.logo.data.attributes.url
           : null,
       link: {},
