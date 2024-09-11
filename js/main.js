@@ -118,7 +118,8 @@ function authorizeToken() {
       }
     })
     .catch((error) => {
-      console.error("Authorization check failed.", error);
+      localStorage.setItem("errorMessage", error.toString() + " " + url);
+      window.location.href = window.location.origin + "/forbidden.html";
     });
 }
 
