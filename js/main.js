@@ -3,8 +3,124 @@ const DEFAULT_STYLE_CSS =
   "align-items: cover; background-repeat: no-repeat; background-color: #323232;";
 
 $(document).ready(function () {
-  getDatas();
+  const urlParams = new URLSearchParams(window.location.search);
+  const code = urlParams.get("code");
+
+  if (code) {
+    // Chiama l'endpoint /token per scambiare il codice con un token
+    exchangeCodeForToken(code);
+  } else {
+    authorizeToken(); // Se il codice non è presente, richiama authorizeToken
+  }
 });
+
+function exchangeCodeForToken(code) {
+  const tokenUrl = urlConfig.baseUrl + "/v1/oAuth/2.0/token";
+
+  const body = {
+    grant_type: "authorization_code",
+    code: code,
+    client_id: "LINKATUTTO-AUTH-01",
+    redirect_uri: "https://linkatutto.giovannilamarmora.com",
+  };
+
+  fetch(tokenUrl, {
+    method: "POST",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(body),
+  })
+    .then((response) => response.json())
+    .then((data) => {
+      if (data.access_token) {
+        // Salva il token nel cookie o nel local storage
+        localStorage.setItem("strapi-token", data.strapiToken.access_token);
+
+        // Ora puoi chiamare getDatas() o fare altre operazioni
+        getDatas();
+      } else {
+        console.error("Token exchange failed", data);
+      }
+    })
+    .catch((error) => {
+      console.error("Error during token exchange", error);
+    });
+}
+
+const urlConfig = {
+  //baseUrl: "http://pc-giovanni:8080",
+  baseUrl: "https://access.sphere.service.stg.giovannilamarmora.com",
+  authorize: "/v1/oAuth/2.0/authorize",
+  param: "?",
+  divider: "&",
+  access_type: "access_type=online",
+  client_id: "client_id=LINKATUTTO-AUTH-01",
+  //redirect_uri:
+  //  "redirect_uri=http://localhost:8080/v1/oAuth/2.0/login/GOOGLE-OAUTH-01",
+  redirect_uri: "redirect_uri=https://linkatutto.giovannilamarmora.com",
+  scope: "scope=openid",
+  login_type_bearer: "type=bearer",
+  login_type_google: "type=google",
+  response_type: "response_type=code",
+};
+
+function getCookie(name) {
+  const value = `; ${document.cookie}`;
+  const parts = value.split(`; ${name}=`);
+  if (parts.length === 2) return parts.pop().split(";").shift();
+}
+
+function authorizeToken() {
+  const token = getCookie("access-token");
+  const url =
+    urlConfig.baseUrl +
+    urlConfig.authorize +
+    urlConfig.param +
+    urlConfig.client_id +
+    urlConfig.divider +
+    urlConfig.access_type +
+    urlConfig.divider +
+    urlConfig.redirect_uri +
+    urlConfig.divider +
+    urlConfig.scope +
+    urlConfig.divider +
+    urlConfig.response_type;
+
+  fetch(url, {
+    method: "GET",
+    headers: token
+      ? { Authorization: `Bearer ${token}` }
+      : {
+          Authorization: `Bearer no_token`,
+        },
+    redirect: "follow",
+  })
+    .then((response) => {
+      if (response.ok) {
+        const redirectUrl = response.headers.get("Location")
+          ? response.headers.get("Location")
+          : response.url != authorizeUrl
+          ? response.url
+          : null;
+        console.log("Redirect URL:", redirectUrl); // Aggiungi questo log
+        if (redirectUrl) {
+          window.location.href = redirectUrl;
+        } else {
+          console.error("Redirect URL not found in response headers.");
+        }
+      } else if (!response.ok) {
+        console.error("Authorization check failed.");
+      }
+      if (getCookie("strapi-token")) {
+        localStorage.setItem("strapi-token", getCookie("strapi-token"));
+        getDatas();
+      }
+    })
+    .catch((error) => {
+      console.error("Authorization check failed.", error);
+    });
+}
 
 function getDatas() {
   getStrapiData(
@@ -12,12 +128,11 @@ function getDatas() {
   ).then((data) => {
     if (data.error != null) {
       localStorage.clear();
-      //return location.reload();
       return;
     }
     displayData(mapData(data)); // JSON data parsed by `data.json()` call
     getSingleDatas();
-    hideLoginForm();
+    //hideLoginForm();
     animation();
   });
 }
@@ -28,7 +143,6 @@ function getSingleDatas() {
   ).then((data) => {
     if (data.error != null) {
       localStorage.clear();
-      //return location.reload();
       return;
     }
     displaySingleData(data);
@@ -37,13 +151,10 @@ function getSingleDatas() {
 
 function hideLoginForm() {
   document.getElementById("loginForm").classList.add("not-display-login");
-  //document.getElementById('loginForm').classList.add("not-display");
   document.getElementById("dashboard").classList.remove("not-display");
-  //animation();
-  //$(".is-revealing").css("opacity", "");
 }
 
-function doLogin() {
+/*function doLogin() {
   const username = document.getElementById("username").value;
   const password = document.getElementById("password").value;
 
@@ -61,11 +172,11 @@ function doLogin() {
         text: "Invalid credentials!",
       });
     else {
-      localStorage.setItem("access-token", data.jwt);
+      localStorage.setItem("strapi-token", data.jwt);
       getDatas();
     }
   });
-}
+}*/
 
 function mapData(inputData) {
   const mappedData = {};

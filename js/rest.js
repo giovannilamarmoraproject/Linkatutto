@@ -8,7 +8,7 @@ async function getStrapiData(url = "", data = {}) {
     credentials: "same-origin", // include, *same-origin, omit
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("access-token"),
+      Authorization: "Bearer " + localStorage.getItem("strapi-token"),
       // 'Content-Type': 'application/x-www-form-urlencoded',
     },
     redirect: "follow", // manual, *follow, error
