@@ -2,6 +2,24 @@ const SPLITTER = "_";
 const DEFAULT_STYLE_CSS =
   "align-items: cover; background-repeat: no-repeat; background-color: #323232;";
 
+const urlConfig = {
+  baseUrl: "http://localhost:8080",
+  //baseUrl: "https://access.sphere.service.stg.giovannilamarmora.com",
+  authorize: "/v1/oAuth/2.0/authorize",
+  token: "/v1/oAuth/2.0/token",
+  param: "?",
+  divider: "&",
+  access_type: "access_type=online",
+  client_id: "client_id=LINKATUTTO-AUTH-01",
+  redirect_uri: "redirect_uri=http://localhost:5501/index.html",
+  //redirect_uri: "redirect_uri=https://linkatutto.giovannilamarmora.com",
+  scope: "scope=openid",
+  login_type_bearer: "type=bearer",
+  login_type_google: "type=google",
+  response_type: "response_type=code",
+  grant_type: "grant_type=authorization_code",
+};
+
 $(document).ready(function () {
   const urlParams = new URLSearchParams(window.location.search);
   const code = urlParams.get("code");
@@ -15,27 +33,46 @@ $(document).ready(function () {
 });
 
 function exchangeCodeForToken(code) {
-  const tokenUrl = urlConfig.baseUrl + "/v1/oAuth/2.0/token";
+  const urlParams = new URLSearchParams(window.location.search);
+  const scope = urlParams.get("scope");
+  const tokenUrl =
+    urlConfig.baseUrl +
+    urlConfig.token +
+    urlConfig.param +
+    urlConfig.client_id +
+    urlConfig.divider +
+    "code=" +
+    code +
+    urlConfig.divider +
+    urlConfig.redirect_uri +
+    urlConfig.divider +
+    urlConfig.grant_type +
+    urlConfig.divider +
+    "scope=" +
+    scope;
 
-  const body = {
-    grant_type: "authorization_code",
-    code: code,
-    client_id: "LINKATUTTO-AUTH-01",
-    redirect_uri: "https://linkatutto.giovannilamarmora.com",
-  };
+  const cleanUrl = window.location.origin + window.location.pathname;
+  window.history.replaceState(null, "", cleanUrl);
 
   fetch(tokenUrl, {
     method: "POST",
+    //mode: "no-cors", // Disabilita il controllo CORS (ma la risposta sarà "opaque")
     headers: {
       "Content-Type": "application/json",
+      "Session-ID": getCookie("Session-ID"),
     },
-    body: JSON.stringify(body),
+    credentials: "same-origin",
   })
     .then((response) => response.json())
     .then((data) => {
-      if (data.access_token) {
+      console.log(data);
+      if (data.data.strapiToken.access_token) {
         // Salva il token nel cookie o nel local storage
-        localStorage.setItem("strapi-token", data.strapiToken.access_token);
+        localStorage.setItem("access-token", data.data.token.access_token);
+        localStorage.setItem(
+          "strapi-token",
+          data.data.strapiToken.access_token
+        );
 
         // Ora puoi chiamare getDatas() o fare altre operazioni
         getDatas();
@@ -44,26 +81,10 @@ function exchangeCodeForToken(code) {
       }
     })
     .catch((error) => {
-      console.error("Error during token exchange", error);
+      localStorage.setItem("errorMessage", error.toString() + " " + url);
+      window.location.href = window.location.origin + "/forbidden.html";
     });
 }
-
-const urlConfig = {
-  //baseUrl: "http://pc-giovanni:8080",
-  baseUrl: "https://access.sphere.service.stg.giovannilamarmora.com",
-  authorize: "/v1/oAuth/2.0/authorize",
-  param: "?",
-  divider: "&",
-  access_type: "access_type=online",
-  client_id: "client_id=LINKATUTTO-AUTH-01",
-  //redirect_uri:
-  //  "redirect_uri=http://localhost:8080/v1/oAuth/2.0/login/GOOGLE-OAUTH-01",
-  redirect_uri: "redirect_uri=https://linkatutto.giovannilamarmora.com",
-  scope: "scope=openid",
-  login_type_bearer: "type=bearer",
-  login_type_google: "type=google",
-  response_type: "response_type=code",
-};
 
 function getCookie(name) {
   const value = `; ${document.cookie}`;
@@ -72,7 +93,10 @@ function getCookie(name) {
 }
 
 function authorizeToken() {
-  const token = getCookie("access-token");
+  const token =
+    getCookie("access-token") != null
+      ? getCookie("access-token")
+      : localStorage.getItem("access-token");
   const url =
     urlConfig.baseUrl +
     urlConfig.authorize +
@@ -100,19 +124,19 @@ function authorizeToken() {
       if (response.ok) {
         const redirectUrl = response.headers.get("Location")
           ? response.headers.get("Location")
-          : response.url != authorizeUrl
+          : response.url != url
           ? response.url
           : null;
-        console.log("Redirect URL:", redirectUrl); // Aggiungi questo log
         if (redirectUrl) {
           window.location.href = redirectUrl;
         } else {
-          console.error("Redirect URL not found in response headers.");
+          getDatas();
         }
       } else if (!response.ok) {
         console.error("Authorization check failed.");
       }
       if (getCookie("strapi-token")) {
+        localStorage.setItem("access-token", getCookie("access-token"));
         localStorage.setItem("strapi-token", getCookie("strapi-token"));
         getDatas();
       }
@@ -133,6 +157,7 @@ function getDatas() {
     }
     displayData(mapData(data)); // JSON data parsed by `data.json()` call
     getSingleDatas();
+    hideBlankPage();
     //hideLoginForm();
     animation();
   });
@@ -148,6 +173,11 @@ function getSingleDatas() {
     }
     displaySingleData(data);
   });
+}
+
+function hideBlankPage() {
+  document.getElementById("blank_page").classList.add("not-display-login");
+  document.getElementById("dashboard").classList.remove("not-display");
 }
 
 function hideLoginForm() {
