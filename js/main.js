@@ -3,16 +3,20 @@ const DEFAULT_STYLE_CSS =
   "align-items: cover; background-repeat: no-repeat; background-color: #323232;";
 
 const urlConfig = {
-  baseUrl: "http://localhost:8080",
-  //baseUrl: "https://access.sphere.service.stg.giovannilamarmora.com",
+  /** Local Config */
+  //baseUrl: "http://localhost:8080",
+  //client_id: "client_id=LINKATUTTO-AUTH-TEST",
+  //redirect_uri: "redirect_uri=http://localhost:5501/index.html",
+  /** Remote Config */
+  baseUrl: "https://access.sphere.service.stg.giovannilamarmora.com",
+  client_id: "client_id=LINKATUTTO-AUTH-01",
+  redirect_uri: "redirect_uri=https://linkatutto.giovannilamarmora.com",
   authorize: "/v1/oAuth/2.0/authorize",
   token: "/v1/oAuth/2.0/token",
+  logout: "/v1/oAuth/2.0/logout",
   param: "?",
   divider: "&",
   access_type: "access_type=online",
-  client_id: "client_id=LINKATUTTO-AUTH-01",
-  redirect_uri: "redirect_uri=http://localhost:5501/index.html",
-  //redirect_uri: "redirect_uri=https://linkatutto.giovannilamarmora.com",
   scope: "scope=openid",
   login_type_bearer: "type=bearer",
   login_type_google: "type=google",
@@ -23,11 +27,19 @@ const urlConfig = {
 $(document).ready(function () {
   const urlParams = new URLSearchParams(window.location.search);
   const code = urlParams.get("code");
+  const access_token = urlParams.get("access-token");
+  const session_id = urlParams.get("session-id");
 
   if (code) {
     // Chiama l'endpoint /token per scambiare il codice con un token
     exchangeCodeForToken(code);
   } else {
+    if (access_token) {
+      if (session_id) localStorage.setItem("Session-ID", session_id);
+      localStorage.setItem("access-token", access_token);
+      const cleanUrl = window.location.origin + window.location.pathname;
+      window.history.replaceState(null, "", cleanUrl);
+    }
     authorizeToken(); // Se il codice non è presente, richiama authorizeToken
   }
 });
@@ -59,28 +71,34 @@ function exchangeCodeForToken(code) {
     //mode: "no-cors", // Disabilita il controllo CORS (ma la risposta sarà "opaque")
     headers: {
       "Content-Type": "application/json",
-      "Session-ID": getCookie("Session-ID"),
+      ...getSavedHeaders(),
     },
     credentials: "same-origin",
   })
-    .then((response) => response.json())
+    .then((response) => {
+      fetchHeader(response.headers);
+      return response.json();
+    })
     .then((data) => {
-      console.log(data);
-      if (data.data.strapiToken.access_token) {
+      if (data.data) {
         // Salva il token nel cookie o nel local storage
-        localStorage.setItem("access-token", data.data.token.access_token);
-        localStorage.setItem(
-          "strapi-token",
-          data.data.strapiToken.access_token
-        );
+        if (data.data.token.access_token)
+          localStorage.setItem("access-token", data.data.token.access_token);
+        if (data.data.strapiToken.access_token)
+          localStorage.setItem(
+            "strapi-token",
+            data.data.strapiToken.access_token
+          );
 
         // Ora puoi chiamare getDatas() o fare altre operazioni
         getDatas();
       } else {
+        localStorage.clear();
         console.error("Token exchange failed", data);
       }
     })
     .catch((error) => {
+      //localStorage.clear();
       localStorage.setItem("errorMessage", error.toString() + " " + url);
       window.location.href = window.location.origin + "/forbidden.html";
     });
@@ -114,13 +132,16 @@ function authorizeToken() {
   fetch(url, {
     method: "GET",
     headers: token
-      ? { Authorization: `Bearer ${token}` }
+      ? { Authorization: `Bearer ${token}`, ...getSavedHeaders() }
       : {
-          Authorization: `Bearer no_token`,
+          Authorization: null,
         },
     redirect: "follow",
+    mode: "cors", // no-cors, *cors, same-origin
+    //credentials: "include",
   })
     .then((response) => {
+      fetchHeader(response.headers);
       if (response.ok) {
         const redirectUrl = response.headers.get("Location")
           ? response.headers.get("Location")
@@ -129,10 +150,9 @@ function authorizeToken() {
           : null;
         if (redirectUrl) {
           window.location.href = redirectUrl;
-        } else {
-          getDatas();
         }
       } else if (!response.ok) {
+        localStorage.clear();
         console.error("Authorization check failed.");
       }
       if (getCookie("strapi-token")) {
@@ -140,11 +160,91 @@ function authorizeToken() {
         localStorage.setItem("strapi-token", getCookie("strapi-token"));
         getDatas();
       }
+      return response.json();
+    })
+    .then((response) => {
+      if (response.data.strapiToken.access_token) {
+        localStorage.setItem(
+          "strapi-token",
+          response.data.strapiToken.access_token
+        );
+      }
+      getDatas();
     })
     .catch((error) => {
       localStorage.setItem("errorMessage", error.toString() + " " + url);
+      //window.location.href = window.location.origin + "/forbidden.html";
+    });
+}
+
+function logout() {
+  const token =
+    getCookie("access-token") != null
+      ? getCookie("access-token")
+      : localStorage.getItem("access-token");
+  const logoutUrl =
+    urlConfig.baseUrl +
+    urlConfig.logout +
+    urlConfig.param +
+    urlConfig.client_id;
+
+  fetch(logoutUrl, {
+    method: "POST",
+    //mode: "no-cors", // Disabilita il controllo CORS (ma la risposta sarà "opaque")
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+      ...getSavedHeaders(),
+    },
+    credentials: "same-origin",
+  })
+    .then((response) => {
+      fetchHeader(response.headers);
+      return response.json();
+    })
+    .finally((res) => {
+      localStorage.clear();
+      location.reload();
+    })
+    .catch((error) => {
+      //localStorage.clear();
+      localStorage.setItem("errorMessage", error.toString() + " " + url);
       window.location.href = window.location.origin + "/forbidden.html";
     });
+}
+
+function fetchHeader(headers) {
+  // Leggi gli header specifici che ti interessano
+  const parentId = headers.get("Parent-ID");
+  const redirectUri = headers.get("redirect-uri");
+  const sessionId = headers.get("Session-ID");
+  const spanId = headers.get("Span-ID");
+  const traceId = headers.get("Trace-ID");
+
+  // Salva gli header in localStorage o sessionStorage
+  if (parentId) localStorage.setItem("Parent-ID", parentId);
+  if (redirectUri) localStorage.setItem("redirect-uri", redirectUri);
+  if (sessionId) localStorage.setItem("Session-ID", sessionId);
+  if (spanId) localStorage.setItem("Span-ID", spanId);
+  if (traceId) localStorage.setItem("Trace-ID", traceId);
+}
+
+function getSavedHeaders() {
+  const headers = {};
+
+  const parentId = localStorage.getItem("Parent-ID");
+  const redirectUri = localStorage.getItem("redirect-uri");
+  const sessionId = localStorage.getItem("Session-ID");
+  const spanId = localStorage.getItem("Span-ID");
+  const traceId = localStorage.getItem("Trace-ID");
+
+  if (parentId) headers["Parent-ID"] = parentId;
+  if (redirectUri) headers["redirect-uri"] = redirectUri;
+  if (sessionId) headers["Session-ID"] = sessionId;
+  if (spanId) headers["Span-ID"] = spanId;
+  if (traceId) headers["Trace-ID"] = traceId;
+
+  return headers;
 }
 
 function getDatas() {
