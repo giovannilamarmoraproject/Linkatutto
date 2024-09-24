@@ -2,15 +2,17 @@ const SPLITTER = "_";
 const DEFAULT_STYLE_CSS =
   "align-items: cover; background-repeat: no-repeat; background-color: #323232;";
 
+const version = "V1.0.0";
+
 const urlConfig = {
   /** Local Config */
-  //baseUrl: "http://localhost:8080",
-  //client_id: "client_id=LINKATUTTO-AUTH-TEST",
-  //redirect_uri: "redirect_uri=http://localhost:5501/index.html",
+  baseUrl: "http://localhost:8080",
+  client_id: "client_id=LINKATUTTO-AUTH-TEST",
+  redirect_uri: "redirect_uri=http://localhost:5501/index.html",
   /** Remote Config */
-  baseUrl: "https://access.sphere.service.stg.giovannilamarmora.com",
-  client_id: "client_id=LINKATUTTO-AUTH-01",
-  redirect_uri: "redirect_uri=https://linkatutto.giovannilamarmora.com",
+  //baseUrl: "https://access.sphere.service.stg.giovannilamarmora.com",
+  //client_id: "client_id=LINKATUTTO-AUTH-01",
+  //redirect_uri: "redirect_uri=https://linkatutto.giovannilamarmora.com",
   authorize: "/v1/oAuth/2.0/authorize",
   token: "/v1/oAuth/2.0/token",
   logout: "/v1/oAuth/2.0/logout",
@@ -351,7 +353,7 @@ function displaySingleData(strapi) {
   $(".github_url").attr("href", strapiData.github_url);
   $(".log_explore").attr("href", strapiData.log_explore);
   $(".website_url").attr("href", strapiData.website_url);
-  $("#copyright-text").text(strapiData.copyright);
+  $("#copyright-text").text(strapiData.copyright + ". " + version);
   $("#contact_url").attr("href", strapiData.contact_url);
   $("#about_url").attr("href", strapiData.about_url);
   $("#FAQ_url").attr("href", strapiData.FAQ_url);

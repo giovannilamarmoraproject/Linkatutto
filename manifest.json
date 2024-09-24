@@ -1,0 +1,20 @@
+{
+  "name": "Linkatutto",
+  "short_name": "Linkatutto",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#1d2026",
+  "theme_color": "#1d2026",
+  "icons": [
+    {
+      "src": "https://raw.githubusercontent.com/giovannilamarmora/giovannilamarmora.github.io/0f58a355856d25a7154482951a3220899ee59d10/assets/icons/svg/rounded_white.svg",
+      "type": "image/png",
+      "sizes": "192x192"
+    },
+    {
+      "src": "https://raw.githubusercontent.com/giovannilamarmora/giovannilamarmora.github.io/0f58a355856d25a7154482951a3220899ee59d10/assets/icons/svg/rounded_white.svg",
+      "type": "image/png",
+      "sizes": "512x512"
+    }
+  ]
+}

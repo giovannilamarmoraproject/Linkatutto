@@ -10,7 +10,7 @@
     <link
       rel="icon"
       type="image/x-icon"
-      href="https://raw.githubusercontent.com/giovannilamarmoraproject/Portfolio/cd15a57f99b8cfdd8d3f29e4d7d0f3b52004c47d/assets/img/logo.svg"
+      href="https://raw.githubusercontent.com/giovannilamarmora/giovannilamarmora.github.io/0f58a355856d25a7154482951a3220899ee59d10/assets/icons/svg/rounded_white.svg"
     />
     <link
       href="https://fonts.googleapis.com/css?family=IBM+Plex+Sans:400,600"
@@ -31,6 +31,22 @@
     ></script>
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link rel="manifest" href="/manifest.json" />
+    <script>
+      if ("serviceWorker" in navigator) {
+        navigator.serviceWorker
+          .register("/service-worker.js")
+          .then(function (registration) {
+            console.log(
+              "Service Worker registered with scope:",
+              registration.scope
+            );
+          })
+          .catch(function (error) {
+            console.log("Service Worker registration failed:", error);
+          });
+      }
+    </script>
   </head>
 
   <body class="is-boxed">
