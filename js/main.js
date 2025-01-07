@@ -2,17 +2,17 @@ const SPLITTER = "_";
 const DEFAULT_STYLE_CSS =
   "align-items: cover; background-repeat: no-repeat; background-color: #323232;";
 
-const version = "V1.0.0";
+const version = "V1.1.0";
 
 const urlConfig = {
   /** Local Config */
-  baseUrl: "http://localhost:8080",
-  client_id: "client_id=LINKATUTTO-AUTH-TEST",
-  redirect_uri: "redirect_uri=http://localhost:5501/index.html",
+  //baseUrl: "http://localhost:8081",
+  //client_id: "client_id=LINKATUTTO-AUTH-TEST",
+  //redirect_uri: "redirect_uri=http://localhost:5501/index.html",
   /** Remote Config */
-  //baseUrl: "https://access.sphere.service.stg.giovannilamarmora.com",
-  //client_id: "client_id=LINKATUTTO-AUTH-01",
-  //redirect_uri: "redirect_uri=https://linkatutto.giovannilamarmora.com",
+  baseUrl: "https://access.sphere.service.stg.giovannilamarmora.com",
+  client_id: "client_id=LINKATUTTO-AUTH-01",
+  redirect_uri: "redirect_uri=https://linkatutto.giovannilamarmora.com",
   authorize: "/v1/oAuth/2.0/authorize",
   token: "/v1/oAuth/2.0/token",
   logout: "/v1/oAuth/2.0/logout",
@@ -24,6 +24,9 @@ const urlConfig = {
   login_type_google: "type=google",
   response_type: "response_type=code",
   grant_type: "grant_type=authorization_code",
+  strapi_url: "https://strapi.giovannilamarmora.com",
+  linkatutto_datas: "/api/hostwebservers?populate=*&pagination[pageSize]=100",
+  linkatutto_data: "/api/hostwebserver-config?populate=*",
 };
 
 $(document).ready(function () {
@@ -210,7 +213,7 @@ function logout() {
     })
     .catch((error) => {
       //localStorage.clear();
-      localStorage.setItem("errorMessage", error.toString() + " " + url);
+      localStorage.setItem("errorMessage", error.toString());
       window.location.href = window.location.origin + "/forbidden.html";
     });
 }
@@ -250,31 +253,44 @@ function getSavedHeaders() {
 }
 
 function getDatas() {
-  getStrapiData(
-    "https://strapi.giovannilamarmora.com/api/hostwebservers?populate=*"
-  ).then((data) => {
-    if (data.error != null) {
-      localStorage.clear();
-      return;
-    }
-    displayData(mapData(data)); // JSON data parsed by `data.json()` call
-    getSingleDatas();
-    hideBlankPage();
-    //hideLoginForm();
-    animation();
-  });
+  getStrapiData(urlConfig.strapi_url + urlConfig.linkatutto_datas)
+    .then((data) => {
+      console.log(data);
+      if (data.error != null) {
+        localStorage.clear();
+        localStorage.setItem("errorMessage", error.toString());
+        window.location.href = window.location.origin + "/forbidden.html";
+        return;
+      }
+      displayData(mapData(data)); // JSON data parsed by `data.json()` call
+      getSingleDatas();
+      hideBlankPage();
+      //hideLoginForm();
+      animation();
+    })
+    .catch((error) => {
+      //localStorage.clear();
+      localStorage.setItem("errorMessage", error.toString());
+      window.location.href = window.location.origin + "/forbidden.html";
+    });
 }
 
 function getSingleDatas() {
-  getStrapiData(
-    "https://strapi.giovannilamarmora.com/api/hostwebserver-config?populate=*"
-  ).then((data) => {
-    if (data.error != null) {
-      localStorage.clear();
-      return;
-    }
-    displaySingleData(data);
-  });
+  getStrapiData(urlConfig.strapi_url + urlConfig.linkatutto_data)
+    .then((data) => {
+      if (data.error != null) {
+        localStorage.clear();
+        localStorage.setItem("errorMessage", error.toString());
+        window.location.href = window.location.origin + "/forbidden.html";
+        return;
+      }
+      displaySingleData(data);
+    })
+    .catch((error) => {
+      //localStorage.clear();
+      localStorage.setItem("errorMessage", error.toString());
+      window.location.href = window.location.origin + "/forbidden.html";
+    });
 }
 
 function hideBlankPage() {
@@ -325,8 +341,7 @@ function mapData(inputData) {
       title: item.attributes.title,
       logo:
         item.attributes.logo.data != null
-          ? "https://strapi.giovannilamarmora.com" +
-            item.attributes.logo.data.attributes.url
+          ? urlConfig.strapi_url + item.attributes.logo.data.attributes.url
           : null,
       link: {},
       style_css:
