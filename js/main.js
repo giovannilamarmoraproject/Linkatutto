@@ -104,7 +104,7 @@ function exchangeCodeForToken(code) {
     })
     .catch((error) => {
       //localStorage.clear();
-      localStorage.setItem("errorMessage", error.toString() + " " + url);
+      localStorage.setItem("errorMessage", error.toString());
       window.location.href = window.location.origin + "/forbidden.html";
     });
 }
@@ -159,6 +159,7 @@ function authorizeToken() {
       } else if (!response.ok) {
         localStorage.clear();
         console.error("Authorization check failed.");
+        location.reload(true);
       }
       if (getCookie("strapi-token")) {
         localStorage.setItem("access-token", getCookie("access-token"));
@@ -177,7 +178,8 @@ function authorizeToken() {
       getDatas();
     })
     .catch((error) => {
-      localStorage.setItem("errorMessage", error.toString() + " " + url);
+      localStorage.setItem("errorMessage", error.toString());
+      //location.reload(true);
       //window.location.href = window.location.origin + "/forbidden.html";
     });
 }
@@ -255,7 +257,6 @@ function getSavedHeaders() {
 function getDatas() {
   getStrapiData(urlConfig.strapi_url + urlConfig.linkatutto_datas)
     .then((data) => {
-      console.log(data);
       if (data.error != null) {
         localStorage.clear();
         localStorage.setItem("errorMessage", error.toString());
