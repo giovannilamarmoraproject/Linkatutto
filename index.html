@@ -129,7 +129,9 @@
               <a class="line m-2"></a>
               <a class="log_explore" target="_blank" href="#">LOG Explore</a>
               <a class="line m-2"></a>
-              <a class="logout" href="#" onclick="logout()">Logout</a>
+              <a class="logout" id="logout-btn" href="#" onclick="logout()"
+                >Logout</a
+              >
             </div>
           </div>
         </div>
@@ -285,7 +287,8 @@
     </div>
   </body>
   <link rel="stylesheet" href="./css/style.css" />
-  <script src="./js/main.js"></script>
+  <script src="./config/config.js"></script>
+  <script src="./js/main.js" defer></script>
   <script src="./js/rest.js"></script>
   <script src="./js/animation.js"></script>
 </html>
