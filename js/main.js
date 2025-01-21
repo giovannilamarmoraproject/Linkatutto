@@ -9,7 +9,7 @@
   const DEFAULT_STYLE_CSS =
     "align-items: cover; background-repeat: no-repeat; background-color: #323232;";
 
-  const version = "V1.1.0";
+  const version = "V1.2.0";
 
   $(document).ready(function () {
     const urlParams = new URLSearchParams(window.location.search);
