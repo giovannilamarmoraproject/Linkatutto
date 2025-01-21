@@ -50,7 +50,7 @@ async function loadConfig() {
 
   try {
     const response = await fetch(
-      "https://raw.githubusercontent.com/tuo-utente/tuo-repo/main/config.jsonc"
+      "https://raw.githubusercontent.com/giovannilamarmoraproject/Linkatutto/refs/heads/master/config/config.jsonc"
     );
 
     if (!response.ok) {
