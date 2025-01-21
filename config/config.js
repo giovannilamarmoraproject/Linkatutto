@@ -60,7 +60,11 @@ async function loadConfig() {
     const jsoncText = await response.text();
 
     // Rimuovi i commenti dal JSONC
-    const jsonText = jsoncText.replace(/\/\/.*|\/\*[\s\S]*?\*\//g, "");
+    const jsonText = jsoncText.replace(
+      /("(?:\\.|[^"\\])*")|\/\/.*|\/\*[\s\S]*?\*\//g,
+      (match, group1) => group1 || ""
+    );
+
     const remoteConfig = JSON.parse(jsonText);
 
     console.log("Using remote configuration from GitHub");
@@ -70,8 +74,6 @@ async function loadConfig() {
       "Failed to load remote configuration. Using fallback config.",
       error
     );
-    return fallbackConfig;
+    return localConfig;
   }
 }
-
-//export default loadConfig;

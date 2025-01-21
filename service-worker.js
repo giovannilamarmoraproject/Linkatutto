@@ -11,6 +11,7 @@ self.addEventListener("install", (event) => {
           "css/forbidden.css",
           "js/animation.js",
           "js/forbidden.js",
+          "config/config.js",
           "js/main.js",
           "js/rest.js",
         ]);
