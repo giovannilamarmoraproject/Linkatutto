@@ -19,7 +19,7 @@ const localConfig = {
 };
 
 const fallbackConfig = {
-  baseUrl: "https://access.sphere.service.stg.giovannilamarmora.com",
+  baseUrl: "https://access.sphere.service.giovannilamarmora.com",
   client_id: "client_id=LINKATUTTO-AUTH-01",
   redirect_uri: "redirect_uri=https://linkatutto.giovannilamarmora.com",
   authorize: "/v1/oAuth/2.0/authorize",
