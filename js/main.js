@@ -3,13 +3,10 @@
   const urlConfig = await loadConfig();
   console.log("Configuration loaded:", urlConfig);
 
-  // Usa urlConfig per il resto dell'app
-
-  const SPLITTER = "_";
   const DEFAULT_STYLE_CSS =
     "align-items: cover; background-repeat: no-repeat; background-color: #323232;";
 
-  const version = "V1.2.1";
+  const version = "V1.3.0";
 
   $(document).ready(function () {
     const urlParams = new URLSearchParams(window.location.search);
@@ -37,26 +34,37 @@
   function exchangeCodeForToken(code) {
     const urlParams = new URLSearchParams(window.location.search);
     const scope = urlParams.get("scope");
-    const tokenUrl =
-      urlConfig.baseUrl +
-      urlConfig.token +
-      urlConfig.param +
-      urlConfig.client_id +
-      urlConfig.divider +
-      "code=" +
-      code +
-      urlConfig.divider +
-      urlConfig.redirect_uri +
-      urlConfig.divider +
-      urlConfig.grant_type +
-      urlConfig.divider +
-      "scope=" +
-      scope;
+    //const tokenUrl =
+    //  urlConfig.baseUrl +
+    //  urlConfig.token +
+    //  urlConfig.param +
+    //  urlConfig.client_id +
+    //  urlConfig.divider +
+    //  "code=" +
+    //  code +
+    //  urlConfig.divider +
+    //  urlConfig.redirect_uri +
+    //  urlConfig.divider +
+    //  urlConfig.grant_type +
+    //  urlConfig.divider +
+    //  "scope=" +
+    //  scope;
+
+    // Costruisce l'URL per ottenere il token
+    const tokenUrl = new URL(urlConfig.baseUrl + urlConfig.token);
+    const params = new URLSearchParams({
+      client_id: urlConfig.client_id.replace("client_id=", ""),
+      code: code,
+      redirect_uri: urlConfig.redirect_uri.replace("redirect_uri=", ""),
+      grant_type: urlConfig.grant_type.replace("grant_type=", ""),
+      scope: scope,
+    });
+    tokenUrl.search = params.toString();
 
     const cleanUrl = window.location.origin + window.location.pathname;
     window.history.replaceState(null, "", cleanUrl);
 
-    fetch(tokenUrl, {
+    fetch(tokenUrl.toString(), {
       method: "POST",
       //mode: "no-cors", // Disabilita il controllo CORS (ma la risposta sarà "opaque")
       headers: {
@@ -71,20 +79,28 @@
       })
       .then((data) => {
         if (data.data) {
+          const token = data.data.token;
+          const strapiToken = data.data.strapiToken;
           // Salva il token nel cookie o nel local storage
-          if (data.data.token.access_token)
-            localStorage.setItem("access-token", data.data.token.access_token);
-          if (data.data.strapiToken.access_token)
+          if (token && strapiToken) {
+            if (token.access_token)
+              localStorage.setItem("access-token", token.access_token);
+            if (strapiToken.access_token)
+              localStorage.setItem("strapi-token", strapiToken.access_token);
+          } else {
             localStorage.setItem(
-              "strapi-token",
-              data.data.strapiToken.access_token
+              "errorMessage",
+              "Strapi Token is required to proceed. You must specify a token into your configuration."
             );
-
+            window.location.href = window.location.origin + "/forbidden.html";
+          }
           // Ora puoi chiamare getDatas() o fare altre operazioni
           getDatas();
         } else {
           localStorage.clear();
           console.error("Token exchange failed", data);
+          localStorage.setItem("errorMessage", data.error.message);
+          window.location.href = window.location.origin + "/forbidden.html";
         }
       })
       .catch((error) => {
@@ -102,9 +118,8 @@
 
   function authorizeToken() {
     const token =
-      getCookie("access-token") != null
-        ? getCookie("access-token")
-        : localStorage.getItem("access-token");
+      getCookie("access-token") || localStorage.getItem("access-token");
+
     const url =
       urlConfig.baseUrl +
       urlConfig.authorize +
@@ -118,14 +133,27 @@
       urlConfig.scope +
       urlConfig.divider +
       urlConfig.response_type;
+    // Costruisce l'URL di autorizzazione
+    //const url = new URL(urlConfig.baseUrl + urlConfig.authorize);
+    //const params = new URLSearchParams({
+    //  client_id: urlConfig.client_id.replace("client_id=", ""),
+    //  access_type: urlConfig.access_type.replace("access_type=", ""),
+    //  redirect_uri: urlConfig.redirect_uri.replace("redirect_uri=", ""),
+    //  scope: urlConfig.scope.replace("scope=", ""),
+    //  response_type: urlConfig.response_type.replace("response_type=", ""),
+    //});
+    //url.search = params.toString();
+
+    // Configura gli header
+    const headers = token
+      ? { Authorization: `Bearer ${token}`, ...getSavedHeaders() }
+      : {
+          Authorization: null,
+        };
 
     fetch(url, {
       method: "GET",
-      headers: token
-        ? { Authorization: `Bearer ${token}`, ...getSavedHeaders() }
-        : {
-            Authorization: null,
-          },
+      headers: headers,
       redirect: "follow",
       mode: "cors", // no-cors, *cors, same-origin
       //credentials: "include",
@@ -133,11 +161,10 @@
       .then((response) => {
         fetchHeader(response.headers);
         if (response.ok) {
-          const redirectUrl = response.headers.get("Location")
-            ? response.headers.get("Location")
-            : response.url != url
-            ? response.url
-            : null;
+          const locationHeader = response.headers.get("Location");
+          const redirectUrl =
+            locationHeader ?? (response.url !== url ? response.url : null);
+
           if (redirectUrl) {
             window.location.href = redirectUrl;
           }
@@ -146,9 +173,10 @@
           console.error("Authorization check failed.");
           location.reload(true);
         }
-        if (getCookie("strapi-token")) {
+        const strapiToken = getCookie("strapi-token");
+        if (strapiToken) {
           localStorage.setItem("access-token", getCookie("access-token"));
-          localStorage.setItem("strapi-token", getCookie("strapi-token"));
+          localStorage.setItem("strapi-token", strapiToken);
           getDatas();
         }
         return response.json();
@@ -171,9 +199,8 @@
 
   function logout() {
     const token =
-      getCookie("access-token") != null
-        ? getCookie("access-token")
-        : localStorage.getItem("access-token");
+      getCookie("access-token") || localStorage.getItem("access-token");
+
     const logoutUrl =
       urlConfig.baseUrl +
       urlConfig.logout +
@@ -288,30 +315,6 @@
     document.getElementById("loginForm").classList.add("not-display-login");
     document.getElementById("dashboard").classList.remove("not-display");
   }
-
-  /*function doLogin() {
-  const username = document.getElementById("username").value;
-  const password = document.getElementById("password").value;
-
-  let encode = btoa(username + ":" + password);
-
-  const body = { identifier: username, password: password };
-  postStrapiData(
-    "https://strapi.giovannilamarmora.com/api/auth/local",
-    body
-  ).then((data) => {
-    if (data.error != null)
-      Swal.fire({
-        icon: "error",
-        title: "Oops...",
-        text: "Invalid credentials!",
-      });
-    else {
-      localStorage.setItem("strapi-token", data.jwt);
-      getDatas();
-    }
-  });
-}*/
 
   function mapData(inputData) {
     const mappedData = {};
