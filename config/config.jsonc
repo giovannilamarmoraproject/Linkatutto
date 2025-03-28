@@ -11,7 +11,7 @@
   "scope": "scope=openid",
   "login_type_bearer": "type=bearer",
   "login_type_google": "type=google",
-  "response_type": "response_type=code",
+  "response_type": "response_type=token",
   "grant_type": "grant_type=authorization_code",
   "strapi_url": "https://strapi.giovannilamarmora.com",
   "linkatutto_datas": "/api/hostwebservers?populate=*&pagination[pageSize]=100",
