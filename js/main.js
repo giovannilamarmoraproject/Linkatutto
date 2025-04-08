@@ -1,273 +1,70 @@
 (async function initialize() {
   // Assicurati che loadConfig sia già definito globalmente
-  const urlConfig = await loadConfig();
-  console.log("Configuration loaded:", urlConfig);
+  //const urlConfig = await loadConfig();
+  const urlConfig = await configuration;
+  console.log("✅ Configuration loaded:", urlConfig);
 
   const DEFAULT_STYLE_CSS =
     "align-items: cover; background-repeat: no-repeat; background-color: #323232;";
 
-  const version = "V1.3.0";
+  const version = "V2.0.0";
 
-  $(document).ready(function () {
-    const urlParams = new URLSearchParams(window.location.search);
-    const code = urlParams.get("code");
-    const access_token = urlParams.get("access-token");
-    const session_id = urlParams.get("session-id");
-
-    if (code) {
-      // Chiama l'endpoint /token per scambiare il codice con un token
-      exchangeCodeForToken(code);
+  /**
+   * ------------------------------
+   * Access Sphere Authorize
+   * ------------------------------
+   */
+  document.addEventListener("ACCESS_SPHERE_AUTH", (event) => {
+    const { success, data, error } = event.detail;
+    if (success && !error) {
+      getDatas();
     } else {
-      if (access_token) {
-        if (session_id) localStorage.setItem("Session-ID", session_id);
-        localStorage.setItem("access-token", access_token);
-        const cleanUrl = window.location.origin + window.location.pathname;
-        window.history.replaceState(null, "", cleanUrl);
-      }
-      authorizeToken(); // Se il codice non è presente, richiama authorizeToken
+      localStorage.setItem("errorMessage", error.error.message);
+      window.location.href = window.location.origin + "/forbidden.html";
     }
-    $("#logout-btn").click(function () {
-      logout(); // Chiamata alla funzione logout
-    });
   });
 
-  function exchangeCodeForToken(code) {
-    const urlParams = new URLSearchParams(window.location.search);
-    const scope = urlParams.get("scope");
-    //const tokenUrl =
-    //  urlConfig.baseUrl +
-    //  urlConfig.token +
-    //  urlConfig.param +
-    //  urlConfig.client_id +
-    //  urlConfig.divider +
-    //  "code=" +
-    //  code +
-    //  urlConfig.divider +
-    //  urlConfig.redirect_uri +
-    //  urlConfig.divider +
-    //  urlConfig.grant_type +
-    //  urlConfig.divider +
-    //  "scope=" +
-    //  scope;
+  /**
+   * ------------------------------
+   * Access Sphere Token
+   * ------------------------------
+   */
+  document.addEventListener("ACCESS_SPHERE_TOKEN", (event) => {
+    const { success, data, error } = event.detail;
+    if (success && !error) {
+      getDatas();
+    } else {
+      localStorage.setItem("errorMessage", error.error.message);
+      window.location.href = window.location.origin + "/forbidden.html";
+    }
+  });
 
-    // Costruisce l'URL per ottenere il token
-    const tokenUrl = new URL(urlConfig.baseUrl + urlConfig.token);
-    const params = new URLSearchParams({
-      client_id: urlConfig.client_id.replace("client_id=", ""),
-      code: code,
-      redirect_uri: urlConfig.redirect_uri.replace("redirect_uri=", ""),
-      grant_type: urlConfig.grant_type.replace("grant_type=", ""),
-      scope: scope,
+  /**
+   * ------------------------------
+   * Logout Process
+   * ------------------------------
+   */
+  const logoutButton = document.getElementById("#logout-btn");
+
+  if (logoutButton) {
+    logoutButton.addEventListener("click", function () {
+      logout();
     });
-    tokenUrl.search = params.toString();
-
-    const cleanUrl = window.location.origin + window.location.pathname;
-    window.history.replaceState(null, "", cleanUrl);
-
-    fetch(tokenUrl.toString(), {
-      method: "POST",
-      //mode: "no-cors", // Disabilita il controllo CORS (ma la risposta sarà "opaque")
-      headers: {
-        "Content-Type": "application/json",
-        ...getSavedHeaders(),
-      },
-      credentials: "same-origin",
-    })
-      .then((response) => {
-        fetchHeader(response.headers);
-        return response.json();
-      })
-      .then((data) => {
-        if (data.data) {
-          const token = data.data.token;
-          const strapiToken = data.data.strapiToken;
-          // Salva il token nel cookie o nel local storage
-          if (token && strapiToken) {
-            if (token.access_token)
-              localStorage.setItem("access-token", token.access_token);
-            if (strapiToken.access_token)
-              localStorage.setItem("strapi-token", strapiToken.access_token);
-          } else {
-            localStorage.setItem(
-              "errorMessage",
-              "Strapi Token is required to proceed. You must specify a token into your configuration."
-            );
-            window.location.href = window.location.origin + "/forbidden.html";
-          }
-          // Ora puoi chiamare getDatas() o fare altre operazioni
-          getDatas();
-        } else {
-          localStorage.clear();
-          console.error("Token exchange failed", data);
-          localStorage.setItem("errorMessage", data.error.message);
-          window.location.href = window.location.origin + "/forbidden.html";
-        }
-      })
-      .catch((error) => {
-        //localStorage.clear();
-        localStorage.setItem("errorMessage", error.toString());
-        window.location.href = window.location.origin + "/forbidden.html";
-      });
-  }
-
-  function getCookie(name) {
-    const value = `; ${document.cookie}`;
-    const parts = value.split(`; ${name}=`);
-    if (parts.length === 2) return parts.pop().split(";").shift();
-  }
-
-  function authorizeToken() {
-    const token =
-      getCookie("access-token") || localStorage.getItem("access-token");
-
-    const url =
-      urlConfig.baseUrl +
-      urlConfig.authorize +
-      urlConfig.param +
-      urlConfig.client_id +
-      urlConfig.divider +
-      urlConfig.access_type +
-      urlConfig.divider +
-      urlConfig.redirect_uri +
-      urlConfig.divider +
-      urlConfig.scope +
-      urlConfig.divider +
-      urlConfig.response_type;
-    // Costruisce l'URL di autorizzazione
-    //const url = new URL(urlConfig.baseUrl + urlConfig.authorize);
-    //const params = new URLSearchParams({
-    //  client_id: urlConfig.client_id.replace("client_id=", ""),
-    //  access_type: urlConfig.access_type.replace("access_type=", ""),
-    //  redirect_uri: urlConfig.redirect_uri.replace("redirect_uri=", ""),
-    //  scope: urlConfig.scope.replace("scope=", ""),
-    //  response_type: urlConfig.response_type.replace("response_type=", ""),
-    //});
-    //url.search = params.toString();
-
-    // Configura gli header
-    const headers = token
-      ? { Authorization: `Bearer ${token}`, ...getSavedHeaders() }
-      : {
-          Authorization: null,
-        };
-
-    fetch(url, {
-      method: "GET",
-      headers: headers,
-      redirect: "follow",
-      mode: "cors", // no-cors, *cors, same-origin
-      //credentials: "include",
-    })
-      .then((response) => {
-        fetchHeader(response.headers);
-        if (response.ok) {
-          const locationHeader = response.headers.get("Location");
-          const redirectUrl =
-            locationHeader ?? (response.url !== url ? response.url : null);
-
-          if (redirectUrl) {
-            window.location.href = redirectUrl;
-          }
-        } else if (!response.ok) {
-          localStorage.clear();
-          console.error("Authorization check failed.");
-          location.reload(true);
-        }
-        const strapiToken = getCookie("strapi-token");
-        if (strapiToken) {
-          localStorage.setItem("access-token", getCookie("access-token"));
-          localStorage.setItem("strapi-token", strapiToken);
-          getDatas();
-        }
-        return response.json();
-      })
-      .then((response) => {
-        if (response.data.strapiToken.access_token) {
-          localStorage.setItem(
-            "strapi-token",
-            response.data.strapiToken.access_token
-          );
-        }
-        getDatas();
-      })
-      .catch((error) => {
-        localStorage.setItem("errorMessage", error.toString());
-        //location.reload(true);
-        //window.location.href = window.location.origin + "/forbidden.html";
-      });
   }
 
   function logout() {
-    const token =
-      getCookie("access-token") || localStorage.getItem("access-token");
-
-    const logoutUrl =
-      urlConfig.baseUrl +
-      urlConfig.logout +
-      urlConfig.param +
-      urlConfig.client_id;
-
-    fetch(logoutUrl, {
-      method: "POST",
-      //mode: "no-cors", // Disabilita il controllo CORS (ma la risposta sarà "opaque")
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-        ...getSavedHeaders(),
-      },
-      credentials: "same-origin",
-    })
-      .then((response) => {
-        fetchHeader(response.headers);
-        return response.json();
-      })
-      .finally((res) => {
-        localStorage.clear();
-        location.reload();
-      })
-      .catch((error) => {
-        //localStorage.clear();
-        localStorage.setItem("errorMessage", error.toString());
-        window.location.href = window.location.origin + "/forbidden.html";
-      });
+    console.log("🔴 Logout started...");
+    window.AccessSphere.logout();
   }
 
-  function fetchHeader(headers) {
-    // Leggi gli header specifici che ti interessano
-    const parentId = headers.get("Parent-ID");
-    const redirectUri = headers.get("redirect-uri");
-    const sessionId = headers.get("Session-ID");
-    const spanId = headers.get("Span-ID");
-    const traceId = headers.get("Trace-ID");
-
-    // Salva gli header in localStorage o sessionStorage
-    if (parentId) localStorage.setItem("Parent-ID", parentId);
-    if (redirectUri) localStorage.setItem("redirect-uri", redirectUri);
-    if (sessionId) localStorage.setItem("Session-ID", sessionId);
-    if (spanId) localStorage.setItem("Span-ID", spanId);
-    if (traceId) localStorage.setItem("Trace-ID", traceId);
-  }
-
-  function getSavedHeaders() {
-    const headers = {};
-
-    const parentId = localStorage.getItem("Parent-ID");
-    const redirectUri = localStorage.getItem("redirect-uri");
-    const sessionId = localStorage.getItem("Session-ID");
-    const spanId = localStorage.getItem("Span-ID");
-    const traceId = localStorage.getItem("Trace-ID");
-
-    if (parentId) headers["Parent-ID"] = parentId;
-    if (redirectUri) headers["redirect-uri"] = redirectUri;
-    if (sessionId) headers["Session-ID"] = sessionId;
-    if (spanId) headers["Span-ID"] = spanId;
-    if (traceId) headers["Trace-ID"] = traceId;
-
-    return headers;
-  }
-
+  /**
+   * ------------------------------
+   * Strapi Get Data
+   * ------------------------------
+   */
   function getDatas() {
-    getStrapiData(urlConfig.strapi_url + urlConfig.linkatutto_datas)
+    const token = localStorage.getItem(urlConfig.client_id + "_strapi-token");
+    getStrapiData(urlConfig.strapi_url + urlConfig.linkatutto_datas, token)
       .then((data) => {
         if (data.error != null) {
           localStorage.clear();
@@ -289,7 +86,8 @@
   }
 
   function getSingleDatas() {
-    getStrapiData(urlConfig.strapi_url + urlConfig.linkatutto_data)
+    const token = localStorage.getItem(urlConfig.client_id + "_strapi-token");
+    getStrapiData(urlConfig.strapi_url + urlConfig.linkatutto_data, token)
       .then((data) => {
         if (data.error != null) {
           localStorage.clear();

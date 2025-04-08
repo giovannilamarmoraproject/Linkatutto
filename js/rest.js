@@ -1,5 +1,5 @@
 // Example POST method implementation:
-async function getStrapiData(url = "", data = {}) {
+async function getStrapiData(url = "", bearer, data = {}) {
   // Default options are marked with *
   const response = await fetch(url, {
     method: "GET", // *GET, POST, PUT, DELETE, etc.
@@ -8,7 +8,7 @@ async function getStrapiData(url = "", data = {}) {
     credentials: "same-origin", // include, *same-origin, omit
     headers: {
       "Content-Type": "application/json",
-      Authorization: "Bearer " + localStorage.getItem("strapi-token"),
+      Authorization: "Bearer " + bearer,
       // 'Content-Type': 'application/x-www-form-urlencoded',
     },
     redirect: "follow", // manual, *follow, error

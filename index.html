@@ -38,12 +38,12 @@
           .register("/service-worker.js")
           .then(function (registration) {
             console.log(
-              "Service Worker registered with scope:",
+              "📱 Service Worker registered with scope:",
               registration.scope
             );
           })
           .catch(function (error) {
-            console.log("Service Worker registration failed:", error);
+            console.log("❌ Service Worker registration failed:", error);
           });
       }
     </script>
@@ -51,63 +51,6 @@
 
   <body class="is-boxed">
     <div id="blank_page" class="body-wrap has-animations"></div>
-    <!--<section id="loginForm" class="vh-100">
-      <div class="container-fluid">
-        <div class="row">
-          <div class="col-sm-6 text-black">
-            <div
-              class="d-flex align-items-center h-custom-2 px-5 ms-xl-4 mt-3 pt-xl-0 mt-xl-n5"
-            >
-              <form style="width: 23rem" type="submit">
-                <h3 class="fw-normal mb-3 pb-3" style="letter-spacing: 1px">
-                  Log in
-                </h3>
-
-                <div class="form-outline mb-4">
-                  <input
-                    type="text"
-                    id="username"
-                    class="form-control form-control-lg"
-                  />
-                  <label class="form-label text-light" for="form2Example18"
-                    >Username</label
-                  >
-                </div>
-
-                <div class="form-outline mb-4">
-                  <input
-                    type="password"
-                    id="password"
-                    class="form-control form-control-lg"
-                  />
-                  <label class="form-label text-light" for="form2Example28"
-                    >Password</label
-                  >
-                </div>
-
-                <div class="pt-1 mb-4">
-                  <button
-                    onclick="doLogin()"
-                    class="btn btn-info btn-lg btn-block text-light bg-primary"
-                    type="button"
-                  >
-                    Login
-                  </button>
-                </div>
-              </form>
-            </div>
-          </div>
-          <div class="col-sm-6 px-0 d-none d-sm-block">
-            <img
-              src="https://www.itl.cat/pngfile/big/70-702323_hd-wallpaper-best-background-for-technology.jpg"
-              alt="Login image"
-              class="w-100 vh-100"
-              style="object-fit: cover; object-position: left"
-            />
-          </div>
-        </div>
-      </div>
-    </section>-->
     <div id="dashboard" class="body-wrap not-display has-animations">
       <header class="site-header">
         <div class="container">
@@ -129,9 +72,7 @@
               <a class="line m-2"></a>
               <a class="log_explore" target="_blank" href="#">LOG Explore</a>
               <a class="line m-2"></a>
-              <a class="logout" id="logout-btn" href="#" onclick="logout()"
-                >Logout</a
-              >
+              <a class="logout clickable" id="logout-btn">Logout</a>
             </div>
           </div>
         </div>
@@ -288,7 +229,20 @@
   </body>
   <link rel="stylesheet" href="./css/style.css" />
   <script src="./config/config.js"></script>
-  <script src="./js/main.js" defer></script>
+  <script src="./js/main.js"></script>
   <script src="./js/rest.js"></script>
   <script src="./js/animation.js"></script>
+  <!--<script>
+    window.accessSphereConfig = {
+      client_id: configuration.client_id,
+      redirect_uri: configuration.redirect_uri,
+    };
+    const newScript = document.createElement("script");
+    newScript.src = configuration.baseUrl + configuration.access_sphere_script;
+    newScript.onload = () =>
+      console.log("✅ Access Sphere Script loaded successfully!");
+
+    document.body.appendChild(newScript);
+    document.body.append(newScript);
+  </script>-->
 </html>
