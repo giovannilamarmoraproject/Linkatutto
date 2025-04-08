@@ -1,7 +1,8 @@
 (async function initialize() {
   // Assicurati che loadConfig sia già definito globalmente
   //const urlConfig = await loadConfig();
-  const urlConfig = await configuration;
+  let urlConfig = await configuration;
+  if (!urlConfig) urlConfig = await loadConfig();
   console.log("✅ Configuration loaded:", urlConfig);
 
   const DEFAULT_STYLE_CSS =
