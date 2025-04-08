@@ -8,7 +8,7 @@
   const DEFAULT_STYLE_CSS =
     "align-items: cover; background-repeat: no-repeat; background-color: #323232;";
 
-  const version = "V2.0.0";
+  const version = "V2.0.1";
 
   /**
    * ------------------------------
@@ -39,24 +39,6 @@
       window.location.href = window.location.origin + "/forbidden.html";
     }
   });
-
-  /**
-   * ------------------------------
-   * Logout Process
-   * ------------------------------
-   */
-  const logoutButton = document.getElementById("#logout-btn");
-
-  if (logoutButton) {
-    logoutButton.addEventListener("click", function () {
-      logout();
-    });
-  }
-
-  function logout() {
-    console.log("🔴 Logout started...");
-    window.AccessSphere.logout();
-  }
 
   /**
    * ------------------------------
@@ -255,3 +237,13 @@ align-items: cover;
     return res;
   }
 })();
+
+/**
+ * ------------------------------
+ * Logout Process
+ * ------------------------------
+ */
+function logout() {
+  console.log("🔴 Logout started...");
+  window.AccessSphere.logout();
+}
